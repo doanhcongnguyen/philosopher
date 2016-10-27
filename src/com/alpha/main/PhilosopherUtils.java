@@ -16,6 +16,13 @@ public class PhilosopherUtils {
         return listPhilosopher;
     }
 
+    public static boolean checkPhilosopherCanEat(int philosopherId, List<Philosopher> listPhilosopher) {
+        int leftPhilosopherId = (philosopherId + 4) % 5;
+        int rightPhilosopherId = (philosopherId + 1) % 5;
+        return !checkPhilosopherIsEating(leftPhilosopherId, listPhilosopher) && !checkPhilosopherIsEating(rightPhilosopherId, listPhilosopher);
+
+    }
+
     public static Philosopher getPhilosopherById(int id, List<Philosopher> listPhilosopher) {
         for (Philosopher philosopher : listPhilosopher) {
             if (philosopher.getId() == id) {
@@ -28,5 +35,10 @@ public class PhilosopherUtils {
     public static int getRandomHungryPhilosopherId() {
         Random random = new Random();
         return (random.nextInt(99) + random.nextInt(91)) % Philosopher.PHILOSOPHER_NUM;
+    }
+
+    private static boolean checkPhilosopherIsEating(int leftPhilosopherId, List<Philosopher> listPhilosopher) {
+        Philosopher philosopher = getPhilosopherById(leftPhilosopherId, listPhilosopher);
+        return Philosopher.State.EATING == philosopher.getState();
     }
 }
