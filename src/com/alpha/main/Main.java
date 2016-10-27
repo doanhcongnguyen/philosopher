@@ -17,6 +17,7 @@ public class Main {
     public void doIt() {
         this.doPrintSlash();
         int hungryPhilosopherId = this.getRandomHungryPhilosopherId();
+        // TODO: print philosopher who changed from eating to thinking
         this.doChangeStatusCurrentEatingPhilosopherToThinking(hungryPhilosopherId);
         this.doChangeStatusCurrentHungryPhilosopherToEating();
         this.doNotify(hungryPhilosopherId);
