@@ -11,11 +11,7 @@ public class Main {
 
     static {
         LIST_PHILOSPHER = PhilosopherUtils.getListPhilosopher();
-        try {
-            doPrintPhilosopherState();
-        } catch (InterruptedException ex) {
-            System.out.println(ex.getMessage());
-        }
+        doPrintPhilosopherState();
     }
 
     public void doIt() throws InterruptedException {
@@ -27,10 +23,10 @@ public class Main {
         doPrintPhilosopherState();
     }
 
-    private static void doPrintPhilosopherState() throws InterruptedException {
+    private static void doPrintPhilosopherState() {
         doPrintMessage("Current state: ");
         LIST_PHILOSPHER.forEach((philo) -> {
-            System.out.println("\t- Philosopher <" + philo.getId() + "> is " + philo.getState().toString());
+            doPrintMessage("\t- Philosopher <" + philo.getId() + "> is " + philo.getState().toString());
         });
     }
 
@@ -38,43 +34,42 @@ public class Main {
         System.out.println("====================================================================");
         doPrintMessage("Notification: ");
     }
-    
-    private void doChangeStatusCurrentEatingPhilosopherToThinking(List<Integer> hungryPhilosopherId) throws InterruptedException {
-        for (Integer id: hungryPhilosopherId) {
+
+    private void doChangeStatusCurrentEatingPhilosopherToThinking(List<Integer> hungryPhilosopherId) {
+        hungryPhilosopherId.forEach((id) -> {
             this.doChangeStatusCurrentEatingPhilosopherToThinking(id);
-        }
+        });
     }
 
-    private void doChangeStatusCurrentEatingPhilosopherToThinking(int hungryPhilosopherId) throws InterruptedException {
+    private void doChangeStatusCurrentEatingPhilosopherToThinking(int hungryPhilosopherId) {
         LIST_PHILOSPHER.forEach((philo) -> {
             if (Philosopher.State.EATING == philo.getState() && hungryPhilosopherId != philo.getId()) {
-                System.out.println("\t- Philosopher <" + philo.getId() + "> was EATING and now is THINKING");
+                doPrintMessage("\t- Philosopher <" + philo.getId() + "> was EATING and now is THINKING");
                 philo.setState(Philosopher.State.THINKING);
             }
         });
-        Thread.sleep(TIME_TO_SLEEP);
     }
 
     private void doChangeStatusCurrentHungryPhilosopherToEating() {
         LIST_PHILOSPHER.forEach((philo) -> {
             if (Philosopher.State.HUNGRY == philo.getState()) {
                 if (PhilosopherUtils.checkPhilosopherCanEat(philo.getId(), LIST_PHILOSPHER)) {
-                    System.out.println("\t- Philosopher <" + philo.getId() + "> was HUNGRY and now is EATING");
+                    doPrintMessage("\t- Philosopher <" + philo.getId() + "> was HUNGRY and now is EATING");
                     philo.setState(Philosopher.State.EATING);
                 } else {
-                    System.out.println("\t- Philosopher <" + philo.getId() + "> was HUNGRY but she cannot EATING, beacause of left or right one is eating");
+                    doPrintMessage("\t- Philosopher <" + philo.getId() + "> was HUNGRY but she cannot EATING, beacause of left or right one is eating");
                 }
             }
         });
     }
-    
-    private void doNotify(List<Integer> hungryPhilosopherId) throws InterruptedException {
-        for (Integer id: hungryPhilosopherId) {
+
+    private void doNotify(List<Integer> hungryPhilosopherId) {
+        hungryPhilosopherId.forEach((id) -> {
             this.doNotify(id);
-        }
+        });
     }
 
-    private void doNotify(int hungryPhilosopherId) throws InterruptedException {
+    private void doNotify(int hungryPhilosopherId) {
         Philosopher hungryPhilosopher = PhilosopherUtils.getPhilosopherById(hungryPhilosopherId, LIST_PHILOSPHER);
         switch (hungryPhilosopher.getState()) {
             case EATING:
@@ -87,8 +82,12 @@ public class Main {
         }
     }
 
-    private static void doPrintMessage(String message) throws InterruptedException {
+    private static void doPrintMessage(String message) {
         System.out.println(message);
-        Thread.sleep(TIME_TO_SLEEP);
+        try {
+            Thread.sleep(TIME_TO_SLEEP);
+        } catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
