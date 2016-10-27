@@ -17,7 +17,6 @@ public class Main {
     public void doIt() {
         this.doPrintSlash();
         int hungryPhilosopherId = this.getRandomHungryPhilosopherId();
-        // TODO: print philosopher who changed from eating to thinking
         this.doChangeStatusCurrentEatingPhilosopherToThinking(hungryPhilosopherId);
         this.doChangeStatusCurrentHungryPhilosopherToEating();
         this.doNotify(hungryPhilosopherId);
@@ -48,27 +47,31 @@ public class Main {
     }
 
     private static void doPrintPhilosopherState() {
+        System.out.println("Current state: ");
         LIST_PHILOSPHER.forEach((philo) -> {
-            System.out.println("Philosopher <" + philo.getId() + "> is " + philo.getState().toString());
+            System.out.println("\t- Philosopher <" + philo.getId() + "> is " + philo.getState().toString());
         });
     }
 
     private void doPrintSlash() {
-        System.out.println("==================================");
+        System.out.println("====================================================================");
+    }
+
+    private void doChangeStatusCurrentEatingPhilosopherToThinking(int hungryPhilosopherId) {
+        System.out.println("Notification: ");
+        LIST_PHILOSPHER.forEach((philo) -> {
+            if (Philosopher.State.EATING == philo.getState() && hungryPhilosopherId != philo.getId()) {
+                System.out.println("\t- Philosopher <" + philo.getId() + "> was eating and now is thinking");
+                philo.setState(Philosopher.State.THINKING);
+            }
+        });
     }
 
     private void doChangeStatusCurrentHungryPhilosopherToEating() {
         LIST_PHILOSPHER.forEach((philo) -> {
             if (Philosopher.State.HUNGRY == philo.getState()) {
+                System.out.println("\t- Philosopher <" + philo.getId() + "> was hungry and now is eating");
                 philo.setState(Philosopher.State.EATING);
-            }
-        });
-    }
-
-    private void doChangeStatusCurrentEatingPhilosopherToThinking(int hungryPhilosopherId) {
-        LIST_PHILOSPHER.forEach((philo) -> {
-            if (Philosopher.State.EATING == philo.getState() && hungryPhilosopherId != philo.getId()) {
-                philo.setState(Philosopher.State.THINKING);
             }
         });
     }
@@ -77,10 +80,10 @@ public class Main {
         Philosopher hungryPhilosopher = this.getPhilosopherById(hungryPhilosopherId, LIST_PHILOSPHER);
         switch (hungryPhilosopher.getState()) {
             case EATING:
-                System.out.println("Notification: philosopher <" + hungryPhilosopher.getId() + "> stills is hungry");
+                System.out.println("\t- Philosopher <" + hungryPhilosopher.getId() + "> stills is hungry. She wants to eat more :)");
                 break;
             default:
-                System.out.println("Notification: philosopher <" + hungryPhilosopher.getId() + "> is hungry");
+                System.out.println("\t- Philosopher <" + hungryPhilosopher.getId() + "> is hungry");
                 hungryPhilosopher.setState(Philosopher.State.HUNGRY);
                 break;
         }
