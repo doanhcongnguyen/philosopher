@@ -43,7 +43,7 @@ public class Main {
 
     private void doChangeStatusCurrentEatingPhilosopherToThinking(int hungryPhilosopherId) {
         LIST_PHILOSPHER.forEach((philo) -> {
-            if (Philosopher.State.EATING == philo.getState() && hungryPhilosopherId != philo.getId()) {
+            if (this.checkForPhilosopherDoneEatenYet(philo, hungryPhilosopherId)) {
                 doPrintMessage("\t- Philosopher <" + philo.getId() + "> was EATING and now is THINKING");
                 philo.setState(Philosopher.State.THINKING);
             }
@@ -98,11 +98,19 @@ public class Main {
     }
 
     private void addTwoPhilosopherWhoIsHungryToList(List<Integer> result) {
-        for (int i = 1; i <= 2; i++) {
+        do {
             int id = PhilosopherUtils.getRandomHungryPhilosopherId();
             if (!result.contains(id)) {
                 result.add(id);
             }
-        }
+        } while (2 != result.size());
+    }
+
+    private boolean checkForPhilosopherDoneEatenYet(Philosopher philo, int hungryPhilosopherId) {
+        return Philosopher.State.EATING == philo.getState() && !doesPhilosopherStillHungry(philo, hungryPhilosopherId);
+    }
+
+    private boolean doesPhilosopherStillHungry(Philosopher philo, int hungryPhilosopherId) {
+        return hungryPhilosopherId == philo.getId();
     }
 }
