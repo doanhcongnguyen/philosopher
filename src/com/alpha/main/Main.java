@@ -1,12 +1,12 @@
 package com.alpha.main;
 
 import com.alpha.model.Philosopher;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
-    private static final int TIME_TO_SLEEP = 1000;
+    private static final int TIME_TO_SLEEP = 2 * 1000;
     private static final List<Philosopher> LIST_PHILOSPHER;
 
     static {
@@ -16,7 +16,7 @@ public class Main {
 
     public void doIt() throws InterruptedException {
         this.doPrintSlash();
-        List<Integer> hungryPhilosopherId = Arrays.asList(PhilosopherUtils.getRandomHungryPhilosopherId(), PhilosopherUtils.getRandomHungryPhilosopherId());
+        List<Integer> hungryPhilosopherId = this.getListHungryPhilosopher();
         this.doChangeStatusCurrentEatingPhilosopherToThinking(hungryPhilosopherId);
         this.doChangeStatusCurrentHungryPhilosopherToEating();
         this.doNotify(hungryPhilosopherId);
@@ -88,6 +88,21 @@ public class Main {
             Thread.sleep(TIME_TO_SLEEP);
         } catch (InterruptedException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    private List<Integer> getListHungryPhilosopher() {
+        List<Integer> result = new ArrayList<>();
+        this.addTwoPhilosopherWhoIsHungryToList(result);
+        return result;
+    }
+
+    private void addTwoPhilosopherWhoIsHungryToList(List<Integer> result) {
+        for (int i = 1; i <= 2; i++) {
+            int id = PhilosopherUtils.getRandomHungryPhilosopherId();
+            if (!result.contains(id)) {
+                result.add(id);
+            }
         }
     }
 }
