@@ -36,6 +36,11 @@ public class PhilosopherUtils {
         Random random = new Random();
         return (random.nextInt(99) + random.nextInt(91)) % Philosopher.PHILOSOPHER_NUM;
     }
+    
+    public static boolean isFull() {
+        Random random = new Random();
+        return 1 == (random.nextInt(99) + random.nextInt(91)) % 2;
+    }
 
     private static boolean checkPhilosopherIsEating(int leftPhilosopherId, List<Philosopher> listPhilosopher) {
         Philosopher philosopher = getPhilosopherById(leftPhilosopherId, listPhilosopher);
